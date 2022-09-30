@@ -1,6 +1,71 @@
 from operator import mod
 import pytest
 
+
+def kangaroo(x1, v1, x2, v2):
+    conditions = [
+        x1 < x2 and v1 <= v2,
+        x1 == x2 and v1 < v2,
+        x2 < x1 and v2 <= v1,
+        x2 == x1 and v2 < v1,
+    ]
+    if any(conditions):
+        return "NO"
+    return "YES"
+    # jump_count = x2 - x1
+    # for i in range(jump_count):
+    #     x1 = x1 + v1
+    #     x2 = x2 + v2
+    #     if x1 == x2:
+    #         return "YES"
+    # return "NO"
+
+
+@pytest.mark.parametrize(
+    "x1,v1,x2,v2,exp",
+    [
+        (2, 2, 1, 2, "NO"),
+        (0, 2, 5, 3, "NO"),
+        (0, 1, 5, 1, "NO"),
+        (0, 3, 4, 2, "YES"),
+        (2, 1, 1, 2, "YES"),
+    ],
+)
+def test_kangaroo(x1, v1, x2, v2, exp):
+    assert kangaroo(x1, v1, x2, v2) == exp
+
+
+def countApplesAndOranges(s, t, a, b, apples, oranges):
+    r = None
+    apple_in_house = orange_in_house = 0
+    for apple in apples:
+        d = apple + a
+        if s <= d <= t:
+            apple_in_house += 1
+
+    for orange in oranges:
+        d = orange + b
+        if s <= d <= t:
+            orange_in_house += 1
+
+    r = [apple_in_house, orange_in_house]
+
+    print(apple_in_house)
+    print(orange_in_house)
+    return r
+
+
+@pytest.mark.parametrize(
+    "s,t,a,b,apples,oranges,exp",
+    [
+        (7, 11, 5, 15, [-2, 2, 1], [5, -6], [1, 1]),
+        (7, 10, 4, 12, [2, 3, -4], [3, -2, -4], [1, 2]),
+    ],
+)
+def test_countApplesAndOranges(s, t, a, b, apples, oranges, exp):
+    assert countApplesAndOranges(s, t, a, b, apples, oranges) == exp
+
+
 def get_next_mult_of_five(grade):
     i = 0
     next_ = grade
@@ -9,6 +74,7 @@ def get_next_mult_of_five(grade):
             return next_
         next_ += 1
         i += 1
+
 
 def gradingStudents(grades):
     result = []
@@ -24,12 +90,14 @@ def gradingStudents(grades):
             result.append(next_)
         else:
             result.append(grade)
-            
+
     print(result)
     return result
 
+
 @pytest.mark.parametrize(
-    "grades,exp", [
+    "grades,exp",
+    [
         ([84, 29, 57], [85, 29, 57]),
         ([73, 67, 38, 33], [75, 67, 40, 33]),
         ([0, 100], [0, 100]),
@@ -44,9 +112,11 @@ def get_less_important(k, contests):
     important.sort()
     return important[0:k]
 
+
 def get_more_important(contests):
     contests.sort(reverse=True)
     return contests
+
 
 def get_only_important(contests):
     important = []
@@ -55,6 +125,7 @@ def get_only_important(contests):
         if reduce_ > 0:
             important.append(c)
     return important
+
 
 def luckBalance(k, contests):
     result = None
@@ -79,139 +150,311 @@ def luckBalance(k, contests):
     print(result)
     return result
 
+
 @pytest.mark.parametrize(
-    "k,contests,exp", [
-        (2, [[5,1],[1,1],[4,0]], 10),        
-        (1, [[5,1],[1,1],[4,0]], 8),
-        (3, [[5,1],[2,1],[1,1],[8,1],[10,0],[5,0]], 29),
-        (5, [[13,1],[10,1],[9,1],[8,1],[13,1],[12,1],[18,1],[13,1],], 42),
-        (8, [[13,0],[10,0],[9,0],[8,0],[13,0],[12,0],[18,0],[13,0],], 96),
-        (5, [[13,0],[10,0],[9,0],[8,0],[13,0],[12,0],[18,0],[13,0],], 96),
-        (0, [[13,0],[10,0],[9,0],[8,0],[13,0],[12,0],[18,0],[13,0],], 96),
-        (0, [[1,1],[1,0],[1,0],[1,0],[1,0],[1,0],[1,0],[1,0],], 6),
-        (1, [[1,1],[1,0],[1,0],[1,0],[1,0],[1,0],[1,0],[1,0],], 8),
-        (1, [[2,1],[1,0],[1,0],[1,0],[1,0],[1,0],[1,0],[1,0],], 9),
-        (1, [[2,1],[1,0],[1,0],[1,0],[1,0],[1,0],[1,0],[2,0],], 10),
-        (3, [[1,1],[1,1],[1,1],], 3),
-        (0, [[1,1],[1,1],[1,1],], -3),
-        (1, [[0,1],[0,1],[0,1],], 0),
-        (4, [[1,1],[1,1],[1,1],], 3),
-        (4, [[1,0],[1,0],[1,0],], 3),
-        (0, [[1,1],], -1),
-        (1, [[1,1],], 1),
-        (2, [[1,1],], 1),
-        (0, [[9709,1],
-            [9704,1],
-            [9080,1],
-            [9060,1],
-            [9467,1],
-            [9847,1],
-            [9590,1],
-            [9225,1],
-            [9304,1],
-            [9527,1],
-            [9329,1],
-            [9962,1],
-            [9928,1],
-            [9525,1],
-            [9491,1],
-            [9993,1],
-            [9829,1],
-            [9153,1],
-            [9936,1],
-            [9899,1],
-            [9312,1],
-            [9862,1],
-            [9610,1],
-            [9502,1],
-            [9522,1],
-            [9359,1],
-            [9617,1],
-            [9431,1],
-            [9757,1],
-            [9292,1],
-            [9875,1],
-            [9041,1],
-            [9626,1],
-            [9656,1],
-            [9893,1],
-            [9442,1],
-            [9369,1],
-            [9282,1],
-            [9117,1],
-            [9245,1],
-            [9841,1],
-            [9715,1],
-            [9778,1],
-            [9150,1],
-            [9738,1],
-            [9699,1],
-            [9642,1],
-            [9517,1],
-            [9407,1],
-            [9675,1],
-            [9918,1],
-            [9031,1],
-            [9369,1],
-            [9935,1],
-            [9868,1],
-            [9934,1],
-            [9660,1],
-            [9931,1],
-            [9273,1],
-            [9168,1],
-            [9404,1],
-            [9017,1],
-            [9288,1],
-            [9532,1],
-            [9700,1],
-            [9291,1],
-            [9126,1],
-            [9782,1],
-            [9545,1],
-            [9076,1],
-            [9346,1],
-            [9018,1],
-            [9732,1],
-            [9032,1],
-            [9992,1],
-            [9630,1],
-            [9952,1],
-            [9885,1],
-            [9328,1],
-            [9419,1],
-            [9705,1],
-            [9611,1],
-            [9440,1],
-            [9907,1],
-            [9303,1],
-            [9449,1],
-            [9876,1],
-            [9335,1],
-            [9723,1],
-            [9698,1],
-            [9823,1],
-            [9070,1],
-            [9258,1],
-            [9102,1],
-            [9370,1],
-            [9788,1],
-            [9725,1],
-            [9811,1],
-            [9474,1],
-            [9602,1]],-953782)
+    "k,contests,exp",
+    [
+        (2, [[5, 1], [1, 1], [4, 0]], 10),
+        (1, [[5, 1], [1, 1], [4, 0]], 8),
+        (3, [[5, 1], [2, 1], [1, 1], [8, 1], [10, 0], [5, 0]], 29),
+        (
+            5,
+            [
+                [13, 1],
+                [10, 1],
+                [9, 1],
+                [8, 1],
+                [13, 1],
+                [12, 1],
+                [18, 1],
+                [13, 1],
+            ],
+            42,
+        ),
+        (
+            8,
+            [
+                [13, 0],
+                [10, 0],
+                [9, 0],
+                [8, 0],
+                [13, 0],
+                [12, 0],
+                [18, 0],
+                [13, 0],
+            ],
+            96,
+        ),
+        (
+            5,
+            [
+                [13, 0],
+                [10, 0],
+                [9, 0],
+                [8, 0],
+                [13, 0],
+                [12, 0],
+                [18, 0],
+                [13, 0],
+            ],
+            96,
+        ),
+        (
+            0,
+            [
+                [13, 0],
+                [10, 0],
+                [9, 0],
+                [8, 0],
+                [13, 0],
+                [12, 0],
+                [18, 0],
+                [13, 0],
+            ],
+            96,
+        ),
+        (
+            0,
+            [
+                [1, 1],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+            ],
+            6,
+        ),
+        (
+            1,
+            [
+                [1, 1],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+            ],
+            8,
+        ),
+        (
+            1,
+            [
+                [2, 1],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+            ],
+            9,
+        ),
+        (
+            1,
+            [
+                [2, 1],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [1, 0],
+                [2, 0],
+            ],
+            10,
+        ),
+        (
+            3,
+            [
+                [1, 1],
+                [1, 1],
+                [1, 1],
+            ],
+            3,
+        ),
+        (
+            0,
+            [
+                [1, 1],
+                [1, 1],
+                [1, 1],
+            ],
+            -3,
+        ),
+        (
+            1,
+            [
+                [0, 1],
+                [0, 1],
+                [0, 1],
+            ],
+            0,
+        ),
+        (
+            4,
+            [
+                [1, 1],
+                [1, 1],
+                [1, 1],
+            ],
+            3,
+        ),
+        (
+            4,
+            [
+                [1, 0],
+                [1, 0],
+                [1, 0],
+            ],
+            3,
+        ),
+        (
+            0,
+            [
+                [1, 1],
+            ],
+            -1,
+        ),
+        (
+            1,
+            [
+                [1, 1],
+            ],
+            1,
+        ),
+        (
+            2,
+            [
+                [1, 1],
+            ],
+            1,
+        ),
+        (
+            0,
+            [
+                [9709, 1],
+                [9704, 1],
+                [9080, 1],
+                [9060, 1],
+                [9467, 1],
+                [9847, 1],
+                [9590, 1],
+                [9225, 1],
+                [9304, 1],
+                [9527, 1],
+                [9329, 1],
+                [9962, 1],
+                [9928, 1],
+                [9525, 1],
+                [9491, 1],
+                [9993, 1],
+                [9829, 1],
+                [9153, 1],
+                [9936, 1],
+                [9899, 1],
+                [9312, 1],
+                [9862, 1],
+                [9610, 1],
+                [9502, 1],
+                [9522, 1],
+                [9359, 1],
+                [9617, 1],
+                [9431, 1],
+                [9757, 1],
+                [9292, 1],
+                [9875, 1],
+                [9041, 1],
+                [9626, 1],
+                [9656, 1],
+                [9893, 1],
+                [9442, 1],
+                [9369, 1],
+                [9282, 1],
+                [9117, 1],
+                [9245, 1],
+                [9841, 1],
+                [9715, 1],
+                [9778, 1],
+                [9150, 1],
+                [9738, 1],
+                [9699, 1],
+                [9642, 1],
+                [9517, 1],
+                [9407, 1],
+                [9675, 1],
+                [9918, 1],
+                [9031, 1],
+                [9369, 1],
+                [9935, 1],
+                [9868, 1],
+                [9934, 1],
+                [9660, 1],
+                [9931, 1],
+                [9273, 1],
+                [9168, 1],
+                [9404, 1],
+                [9017, 1],
+                [9288, 1],
+                [9532, 1],
+                [9700, 1],
+                [9291, 1],
+                [9126, 1],
+                [9782, 1],
+                [9545, 1],
+                [9076, 1],
+                [9346, 1],
+                [9018, 1],
+                [9732, 1],
+                [9032, 1],
+                [9992, 1],
+                [9630, 1],
+                [9952, 1],
+                [9885, 1],
+                [9328, 1],
+                [9419, 1],
+                [9705, 1],
+                [9611, 1],
+                [9440, 1],
+                [9907, 1],
+                [9303, 1],
+                [9449, 1],
+                [9876, 1],
+                [9335, 1],
+                [9723, 1],
+                [9698, 1],
+                [9823, 1],
+                [9070, 1],
+                [9258, 1],
+                [9102, 1],
+                [9370, 1],
+                [9788, 1],
+                [9725, 1],
+                [9811, 1],
+                [9474, 1],
+                [9602, 1],
+            ],
+            -953782,
+        ),
     ],
 )
 def test_luckBalance(k, contests, exp):
     assert luckBalance(k, contests) == exp
 
+
 def is_sorted(s):
     new_s = sort_string(s)
     return s == new_s
 
+
 def test_is_sorted():
-    s1 = 'abde'
-    s2 = 'bace'
+    s1 = "abde"
+    s2 = "bace"
     assert is_sorted(s1) is True
     assert is_sorted(s2) is False
 
@@ -244,16 +487,17 @@ def sort_string(s):
         "x",
         "y",
         "z",
-    ]  
+    ]
 
     arr = []
     for c in s:
         arr.append(alpha.index(c))
-    arr.sort()   
-    return ''.join([alpha[c] for c in arr])
+    arr.sort()
+    return "".join([alpha[c] for c in arr])
+
 
 def test_sort_string():
-      
+
     exp = "acde"
     s = "cdea"
     assert sort_string(s) == exp
@@ -282,15 +526,18 @@ def gridChallenge(grid):
     print(result)
     return result
 
+
 @pytest.mark.parametrize(
-    "input,exp", [
-        (['ebacd', 'fghij', 'olmkn', 'trpqs', 'xywuv'], "YES"),
-        (['abc', 'ade', 'efg'], "YES"),
-        (['abc', 'wxy', 'efg'], "NO"),
+    "input,exp",
+    [
+        (["ebacd", "fghij", "olmkn", "trpqs", "xywuv"], "YES"),
+        (["abc", "ade", "efg"], "YES"),
+        (["abc", "wxy", "efg"], "NO"),
     ],
 )
 def test_gridChallenge(input, exp):
     assert gridChallenge(input) == exp
+
 
 def timeConversion(s):
 
@@ -309,8 +556,10 @@ def timeConversion(s):
     print(result)
     return result
 
+
 @pytest.mark.parametrize(
-    "input,exp", [
+    "input,exp",
+    [
         ("07:05:45PM", "19:05:45"),
         ("07:05:45AM", "07:05:45"),
         ("12:00:00AM", "00:00:00"),
@@ -321,6 +570,7 @@ def timeConversion(s):
 )
 def test_timeConversion(input, exp):
     assert timeConversion(input) == exp
+
 
 def birthdayCakeCandles(candles):
     # Write your code here
@@ -334,17 +584,20 @@ def birthdayCakeCandles(candles):
     for n in candles:
         if n == tallest:
             count += 1
-    result = f'{count}'
-    print (result)
+    result = f"{count}"
+    print(result)
     return result
 
+
 @pytest.mark.parametrize(
-    "input,exp", [
+    "input,exp",
+    [
         ([3, 2, 1, 3], "2"),
     ],
 )
 def test_birthdayCakeCandles(input, exp):
     assert birthdayCakeCandles(input) == exp
+
 
 def miniMaxSum(arr):
     outcome = []
@@ -371,39 +624,48 @@ def miniMaxSum(arr):
     print(result)
     return result
 
+
 @pytest.mark.parametrize(
-    "input,exp", [
-        ([1,3,5,7,9], "16 24"),
-        ([1,2,3,4,5], "10 14"),
+    "input,exp",
+    [
+        ([1, 3, 5, 7, 9], "16 24"),
+        ([1, 2, 3, 4, 5], "10 14"),
     ],
 )
 def test_miniMaxSum(input, exp):
     assert miniMaxSum(input) == exp
 
+
 def staircase(n):
     # Write your code here
     outcome = ""
     for i in range(n):
-        outcome += "{}#{}".format(" " * (n-1 - i), "#" * i)
-        if i < n-1:
+        outcome += "{}#{}".format(" " * (n - 1 - i), "#" * i)
+        if i < n - 1:
             outcome += "\n"
     print(outcome)
     return outcome
 
+
 @pytest.mark.parametrize(
-    "input,exp", [
-        (6, """     #
+    "input,exp",
+    [
+        (
+            6,
+            """     #
     ##
    ###
   ####
  #####
-######"""),
-    (1, "#"),
-    (2, " #\n##"),
+######""",
+        ),
+        (1, "#"),
+        (2, " #\n##"),
     ],
 )
 def test_staircase(input, exp):
     assert staircase(input) == exp
+
 
 def plusMinus(arr):
     decimal = 6
@@ -411,21 +673,27 @@ def plusMinus(arr):
     negative = len([n for n in arr if n < 0])
     positive = len([n for n in arr if n > 0])
     zero = len([n for n in arr if n == 0])
-    outcome = [round(positive/size, decimal),round(negative/size, decimal),round(zero/size, decimal)]
-    print (outcome[0])
-    print (outcome[1])
-    print (outcome[2])
+    outcome = [
+        round(positive / size, decimal),
+        round(negative / size, decimal),
+        round(zero / size, decimal),
+    ]
+    print(outcome[0])
+    print(outcome[1])
+    print(outcome[2])
     return outcome
 
 
 @pytest.mark.parametrize(
-    "arr,exp", [
-        ([-4, 3, -9, 0, 4, 1], [0.500000,0.333333,0.166667]),
-        ([1, 1, 0, -1, -1], [0.400000,0.400000,0.200000]),
+    "arr,exp",
+    [
+        ([-4, 3, -9, 0, 4, 1], [0.500000, 0.333333, 0.166667]),
+        ([1, 1, 0, -1, -1], [0.400000, 0.400000, 0.200000]),
     ],
 )
-def test_plauMinus(arr,exp):
+def test_plauMinus(arr, exp):
     assert plusMinus(arr) == exp
+
 
 def calc_d2(arr):
     d = 0
@@ -433,12 +701,13 @@ def calc_d2(arr):
     for line in arr:
         j = 0
         for v in line:
-            print(-i,j)
+            print(-i, j)
             if -i == j:
                 d += v
             j += 1
         i += 1
     return d
+
 
 def calc_d1(arr):
     d1 = 0
@@ -452,9 +721,11 @@ def calc_d1(arr):
         i += 1
     return d1
 
+
 def diagonalDifference(arr):
-    # Write your code here    
+    # Write your code here
     return abs(calc_d1(arr) - calc_d2(arr))
+
 
 def test_calc_d2():
     arr = [
@@ -466,6 +737,7 @@ def test_calc_d2():
     act = calc_d2(arr)
     assert act == exp
 
+
 def test_calc_d1():
     arr = [
         [1, 2, 3],
@@ -475,6 +747,7 @@ def test_calc_d1():
     exp = 15
     act = calc_d1(arr)
     assert act == exp
+
 
 def test_diagonalDifference():
     arr = [
@@ -494,11 +767,13 @@ def aVeryBigSum(ar):
         result += el
     return result
 
+
 def test_aVeryBigSum():
     arr = [1000000001, 1000000002, 1000000003, 1000000004, 1000000005]
     exp = 5000000015
     act = aVeryBigSum(arr)
-    assert act== exp
+    assert act == exp
+
 
 def compareTriplets(a, b):
     # Write your code here
@@ -510,19 +785,22 @@ def compareTriplets(a, b):
             result[1] += 1
     return result
 
+
 @pytest.mark.parametrize(
-    "a,b,exp", [
-        ([1, 2, 3], [3, 2, 1], [1,1]),
-        ([17, 28, 30], [99, 16, 8], [2,1]),
-        ([5, 6, 7], [3, 6, 10], [1,1]),
+    "a,b,exp",
+    [
+        ([1, 2, 3], [3, 2, 1], [1, 1]),
+        ([17, 28, 30], [99, 16, 8], [2, 1]),
+        ([5, 6, 7], [3, 6, 10], [1, 1]),
     ],
 )
 def test_compareTriplets(a, b, exp):
     # a = [1, 2, 3]
     # b = [3, 2, 1]
     # exp = [1,1]
-    act = compareTriplets(a,b)
+    act = compareTriplets(a, b)
     assert act == exp
+
 
 def simpleArraySum(ar):
     # Write your code here
@@ -530,6 +808,7 @@ def simpleArraySum(ar):
     for el in ar:
         result += el
     return result
+
 
 def test_simple_arr_sum():
     exp = 31
